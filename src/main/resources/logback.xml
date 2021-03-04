@@ -1,0 +1,51 @@
+<configuration>
+  
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>	
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request-uuid}] [%X{app-id}] [%X{subject}] ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="fileAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>TRACE</level>
+		</filter>		
+		
+		<file>/log/app-upload.log</file>
+		  
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>/log/app-upload-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- keep 90 days' worth of history -->
+			<maxHistory>90</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{request-uuid}] [%X{app-id}] [%X{subject}] ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+	</root>
+	
+	<logger name="org.springframework.web"          level="${LOG_LEVEL_SPRING_WEB}" /> 
+	<logger name="org.springframework.security"     level="${LOG_LEVEL_SPRING_SECURITY}" />
+	<logger name="org.springframework.jdbc.core"    level="${LOG_LEVEL_SPRING_JDBC}" />
+	<logger name="edu.utec"                         level="${LOG_LEVEL_UTEC}" />	
+  
+</configuration>
+
